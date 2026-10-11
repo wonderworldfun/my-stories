@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#21172b">
+<meta name="description" content="Enter Lara's Storybook and explore three magical adventures.">
+<title>Lara's Storybook</title>
+
+<style>
+:root {
+  --night: #171323;
+  --panel: #241b31;
+  --pink: #f5a8c3;
+  --cream: #fff5e9;
+  --gold: #f3d58a;
+  --muted: #d9c9dc;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(ellipse at top, #34213e, #171323 55%, #100e19);
+  color: var(--cream);
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+button { font: inherit; cursor: pointer; }
+
+.masthead {
+  text-align: center;
+  padding: 46px 18px 28px;
+}
+
+.eyebrow {
+  font: 600 11px Arial, sans-serif;
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+h1 {
+  font-size: clamp(42px, 8vw, 76px);
+  line-height: 1.04;
+  color: var(--pink);
+  font-weight: normal;
+  margin: 12px 0;
+  text-shadow: 0 3px 25px #0008;
+}
+
+.subtitle {
+  font-size: clamp(15px, 2.5vw, 19px);
+  color: var(--muted);
+}
+
+.ornament {
+  color: var(--gold);
+  letter-spacing: .5em;
+  margin-top: 20px;
+}
+
+.shelf {
+  width: min(1100px, 100%);
+  padding: 20px 22px 65px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 26px;
+}
+
+.book {
+  min-width: 0;
+  background: linear-gradient(145deg, #30233b, #201827);
+  border: 1px solid #75546b;
+  border-radius: 15px;
+  padding: 10px 10px 18px;
+  text-align: center;
+  box-shadow: 0 16px 36px #0004;
+  transition: transform .22s, border-color .22s;
+}
+
+.book:hover {
+  transform: translateY(-7px);
+  border-color: var(--pink);
+}
+
+.cover-button {
+  border: 0;
+  padding: 0;
+  background: none;
+  width: 100%;
+  display: block;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.cover-button img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+}
+
+.book h2 {
+  font-size: clamp(17px, 2vw, 23px);
+  font-weight: normal;
+  color: #ffd0df;
+  margin: 17px 4px 12px;
+}
+
+.read-button, .back-button {
+  border: 1px solid #f5b4cb;
+  border-radius: 30px;
+  background: var(--pink);
+  color: #281629;
+  padding: 11px 20px;
+  font: 700 14px Arial, sans-serif;
+}
+
+.read-button:hover {
+  background: #ffd5e2;
+}
+
+.site-footer {
+  text-align: center;
+  padding: 22px;
+  color: #b9a7c2;
+  font-size: 13px;
+  border-top: 1px solid #ffffff16;
+}
+
+.reader {
+  display: none;
+  width: min(850px, calc(100% - 28px));
+  margin: 18px auto 55px;
+  background: var(--cream);
+  color: #35263a;
+  border-radius: 17px;
+  overflow: hidden;
+  box-shadow: 0 24px 70px #0006;
+}
+
+.reader-top { padding: 20px 22px 0; }
+
+.back-button {
+  background: #382742;
+  border-color: #382742;
+  color: white;
+}
+
+.reader-title {
+  text-align: center;
+  color: #9b426a;
+  font-size: clamp(30px, 6vw, 46px);
+  font-weight: normal;
+  line-height: 1.1;
+  margin: 25px 12px 20px;
+}
+
+.reader-cover {
+  display: block;
+  width: min(270px, 72%);
+  height: auto;
+  margin: 0 auto 25px;
+  border-radius: 5px;
+}
+
+.story {
+  padding: 0 clamp(20px, 6vw, 60px) 42px;
+  font-size: 18px;
+  line-height: 1.85;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.reader-bottom {
+  text-align: center;
+  padding: 0 20px 30px;
+}
+
+.hidden { display: none !important; }
+
+@media (max-width: 720px) {
+  .shelf {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+    padding: 15px 14px 45px;
+  }
+
+  .book { padding: 7px 7px 14px; }
+  .book h2 { font-size: 18px; }
+}
+
+@media (max-width: 430px) {
+  .shelf {
+    grid-template-columns: 1fr;
+    width: min(330px, 100%);
+  }
+
+  .masthead { padding-top: 35px; }
+  .book h2 { font-size: 21px; }
+  .story { font-size: 17px; line-height: 1.8; }
+}
+</style>
+</head>
+
+<body>
+
+<header class="masthead" id="masthead">
+  <div class="eyebrow">Three stories · Three adventures</div>
+  <h1>Lara's Storybook</h1>
+  <p class="subtitle">Choose a cover, open a world, and let the adventure begin.</p>
+  <div class="ornament">✦ ❀ ✦</div>
+</header>
+
+<main>
+  <section class="shelf" id="shelf" aria-label="Choose a story"></section>
+
+  <section class="reader" id="reader">
+    <div class="reader-top">
+      <button class="back-button" id="backTop">← Back to the bookshelf</button>
+    </div>
+
+    <h2 class="reader-title" id="readerTitle"></h2>
+    <img class="reader-cover" id="readerCover" alt="">
+    <article class="story" id="storyText"></article>
+
+    <div class="reader-bottom">
+      <button class="back-button" id="backBottom">
+        Return to all three stories
+      </button>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer" id="footer">
+  ✦ Made with imagination ✦<br>
+  Lara's Storybook
+</footer>
+
+<script>
+/*
+Save your three cover images beside this HTML file:
+pink-riding-hood.jpg
+lara-tangled.jpg
+lara-wonderland.jpg
+
+Paste each complete story into its matching text field below.
+*/
+
+const stories = [
+  {
+    title: "Little Pink Riding Hood",
+    cover: "pink-riding-hood.jpg",
+    text: `Lara's mother, Sarah, screamed the moment her own mother revealed her illness. Without wasting a second, she hurriedly called Lara.
+
+Lara, a 13-year-old girl who never abandoned her pink hood, listened carefully as her mother asked her to visit her grandmother. And so, her adventure began.
+
+Lara set off on her journey, recalling her mother’s warning never to talk to strangers. First, she stopped by her uncle’s pharmacy to get some medicine for her grandmother. Then, she headed straight toward her second destination—the forest.
+
+As she walked, she thought about the letter she had sent to her grandmother, explaining the plan she had made to keep her safe.
+
+Finally, she arrived.
+
+She was amazed by the abundance of flowers in front of her. They were beautiful to look at. However, she couldn’t smell them because she had covered her nose.
+
+As she bent down to pick some flowers, a voice echoed behind her.
+
+“Little girl, are you lost?”
+
+She turned left and right until she spotted a shadowy creature, barely perceptible in the darkness. Lara stared at it until she realized it was the wolf she had been waiting for.
+
+Although her mother had warned her not to talk to strangers, she replied calmly, “I’m going to my grandmother’s house at the top of the hill.”
+
+She placed the flowers in her basket, holding them carefully. When she turned around, the wolf had disappeared.
+
+Then, she continued on her way.
+
+As she reached the entrance of her grandmother’s house, the door stood open. Everything was silent—only the sound of the wind rattling the windows could be heard.
+
+She stepped inside confidently.
+
+“Grandma, how are you?” Lara asked gently.
+
+“I’m fine, dear,” the “grandmother” mumbled.
+
+After making sure everything was in place, Lara handed her the flowers.
+
+“Do the flowers smell good?” she asked.
+
+The wolf leaned in and sniffed them. Then, suddenly, he burst out laughing.
+
+“Ha ha ha! You still think I’m your grandmother? I’m the wolf!” he growled, lunging at her.
+
+But before he could reach her, he collapsed to the ground, lifeless.
+
+Lara stood still, calm and fearless. She had known all along. The flowers were poisonous—and her plan had worked.
+
+She rushed to her grandmother’s side and made sure she was safe. Then she smiled, knowing that courage and intelligence had saved the day.
+
+From that moment on, Lara was no longer just a girl in a pink hood—she was the girl who outsmarted the wolf.`
+  },
+
+  {
+    title: "Lara in Tangled",
+    cover: "lara-tangled.jpg",
+    text: `Lara woke up suddenly, her heart racing.
+
+She wasn’t in her room anymore.
+
+Instead, she stood in the middle of a strange town, with tall buildings and colorful banners hanging everywhere. People walked around her—but something felt… off.
+
+“Where am I?” she whispered.
+
+She looked around, confused, until she spotted a small café. Hoping to get answers, she stepped closer—but froze.
+
+Inside were rough-looking people, whispering and laughing loudly.
+
+“Criminals…” she muttered.
+
+Then she saw him.
+
+A strange little figure with wings, holding a bow and arrow.
+
+Lara’s eyes widened.
+
+“Oh my God…” she whispered. “Am I in Tangled?”
+
+Excitement rushed through her.
+
+“If I’m really here… then Rapunzel is here too!”
+
+Without wasting time, Lara ran out, determined to find the tower.
+
+---
+
+She searched everywhere—through forests, hills, and paths—but no matter how far she went, she couldn’t find it.
+
+“I’m missing something…” she said, frustrated.
+
+Suddenly—bam!
+
+Someone crashed into her.
+
+“Oof!” Lara stumbled back.
+
+A young man quickly got up. Behind him, two angry men were chasing him.
+
+“Hey! Get back here!” they shouted.
+
+The boy ran again.
+
+Lara blinked. “Wait… that’s Flynn!”
+
+Without thinking, she followed them.
+
+They ran through trees and over hills—until finally…
+
+There it was.
+
+A tall, hidden tower.
+
+Lara’s face lit up. “I found it!”
+
+Then she froze.
+
+“No… I can’t let Flynn go in.”
+
+She frowned. “If he meets Rapunzel… her hair… it gets cut later.”
+
+Lara shook her head. “No. I won’t let that happen.”
+
+Quickly, she turned to the chasing men. “He went that way!” she pointed in the opposite direction.
+
+Then she ran to Flynn. “They’re going to the tower!” she lied.
+
+Flynn didn’t hesitate—he ran off.
+
+Lara smiled. “Now it’s just me.”
+
+---
+
+She looked up at the tall tower.
+
+“How am I supposed to get up there?”
+
+Then she gasped.
+
+“My powers!”
+
+“I want to be big!”
+
+In seconds, she grew taller and taller until she reached the window. Carefully, she reached in and lifted Rapunzel out.
+
+“Ahhh!” Rapunzel screamed. “Put me down!”
+
+“I’m not going to hurt you!” Lara said quickly.
+
+Just then, a voice echoed from below.
+
+“Rapunzel!”
+
+Mother Gothel.
+
+“She’s not your mother!” Lara said urgently.
+
+Rapunzel shook her head. “Yes she is!”
+
+“No,” Lara insisted. “She’s been lying to you.”
+
+But Rapunzel didn’t believe her.
+
+There was no time to argue.
+
+Lara grabbed her and ran.
+
+---
+
+They ran as fast as they could, with Mother Gothel chasing behind them.
+
+Finally, they reached the palace.
+
+Lara quickly returned to her normal size.
+
+Rapunzel stared at her. “You’re… normal?”
+
+“Yes,” Lara said. “Just like you.”
+
+Rapunzel looked confused. “Then how—?”
+
+Lara took a deep breath.
+
+“I have powers. Like your hair. And people want to use me too,” she said, making up the story. “I found out the truth… and I came to help you.”
+
+Rapunzel hesitated.
+
+“…The truth?”
+
+“Your real parents,” Lara said softly. “They are the king and queen.”
+
+Rapunzel’s eyes filled with confusion—and something else.
+
+A feeling.
+
+A memory.
+
+---
+
+Together, they made a plan.
+
+When the guards brought criminals before the king and queen, Rapunzel stepped forward and told her story.
+
+The king and queen stared at her in shock.
+
+She looked just like them.
+
+Slowly… they believed her.
+
+Tears filled their eyes as they embraced their daughter.
+
+Rapunzel was finally home.
+
+---
+
+Days later, the king and queen thanked Lara.
+
+“You helped bring our daughter back,” they said.
+
+They handed her a glowing golden flower.
+
+“This is very rare,” the queen said. “Keep it safe.”
+
+Lara smiled and placed it carefully in her bag.
+
+“Thank you.”
+
+---
+
+That night, Lara lay in her bed again.
+
+Back in her world.
+
+She held the flower tightly in her hand.
+
+“It’s real…” she whispered.
+
+She closed her eyes, smiling.
+
+“I wonder…”
+
+“…where I’ll wake up next.”`
+  },
+
+  {
+    title: "Lara in Wonderland",
+    cover: "lara-wonderland.jpg",
+    text: `Lara woke with a sudden start, her head resting on a warm, sunlit rock. The air felt different—soft, almost magical. She sat up slowly, brushing dust from her clothes, when something unusual caught her eye.
+
+A rabbit.
+
+Not just any rabbit—it was standing upright, wearing a neat little coat and holding a briefcase.
+
+Lara blinked. “That feels… familiar,” she whispered, though she couldn’t quite remember why.
+
+Curiosity pulled her forward. She stood and followed the rabbit as it hurried along. Suddenly, it leaped into a dark hole in the ground.
+
+Lara hesitated only a second before jumping in after it.
+
+As she fell and fell through the darkness, a memory flickered in her mind.
+
+“A book…” she murmured. “Alice in Wonderland…”
+
+Her eyes widened. “No way… that was just a story.”
+
+But something inside her told her this was real.
+
+Before she could think more, she landed—softly—on something spongy. She bounced slightly, then stood up, looking around.
+
+In front of her were two small bottles, sitting on a stone. One shimmered faintly, the other glowed brightly. Curious, Lara picked them up.
+
+“Why not?” she said, mixing them together and taking a sip.
+
+Almost instantly, she felt something change.
+
+“I want to be small,” she said experimentally.
+
+In a blink, everything around her grew enormous.
+
+Her eyes widened with excitement. “I want to be big!”
+
+She returned to her normal size.
+
+“This is amazing!”
+
+The rabbit was nowhere to be seen now. Though she noticed the door it had gone through, Lara paused.
+
+“No,” she said thoughtfully. “I want to explore.”
+
+She chose a different door.
+
+On the other side, she shrank herself again and stepped into a breathtaking land—fields filled with flowers. But these weren’t ordinary flowers.
+
+They were alive.
+
+There were flower teachers teaching tiny flower students. Flower engineers building petal bridges. Even little flower children laughing and playing.
+
+Lara smiled. “Wow… this is beautiful.”
+
+At first, she thought they would welcome her—but they barely noticed her.
+
+Suddenly, one flower rushed toward her, reaching for her bag. Startled, Lara didn’t know what to do.
+
+“I want to be big!” she shouted.
+
+In an instant, she grew—and accidentally stepped on the flower.
+
+Everything went silent.
+
+Then, angry voices rose all around her.
+
+“She hurt him!” “Get her!”
+
+The flowers turned against her.
+
+“I didn’t mean to!” Lara cried, backing away. She didn’t want to hurt anyone.
+
+She ran.
+
+After a while, she turned around—but the flowers had stopped chasing her.
+
+Relieved, she looked ahead and realized she had entered a new place.
+
+This time, it was a land of trees.
+
+Tall, ancient trees surrounded her, their branches swaying gently.
+
+“Welcome,” one tree said warmly.
+
+Lara smiled in surprise. “You can talk!”
+
+The trees welcomed her kindly, offering her fruits and shade. She sat beneath one of them and began to chat.
+
+“I’ll tell you a story,” the tree said.
+
+Lara listened closely.
+
+The tree spoke of a hardworking girl who once helped it by removing its old branches. In return, it gave her sweet fruits. Later, another girl came—lazy and unwilling to help. She refused to work, complaining about dirty hands. When she returned hungry, the tree refused to help her.
+
+“That’s a cool story,” Lara said with a smile. “Thank you.”
+
+She stood to leave.
+
+“Wait!” the tree called.
+
+“Yes?” Lara turned.
+
+“Can you help me remove my old branches?”
+
+Lara smiled kindly. “Of course.”
+
+She carefully helped the tree, just like in its story. When she finished, she waved goodbye and continued her journey.
+
+As she walked, she nearly stepped on a sharp, spiked plant.
+
+“Be careful!” another tree warned.
+
+Lara quickly stepped back.
+
+“This land is full of spiked plants,” the tree explained. “They are dangerous—and often evil.”
+
+“Thank you,” Lara said gratefully, moving carefully now.
+
+At last, she saw it.
+
+A door.
+
+The door that would lead her home.
+
+But something blocked her path—a strange creature, twisting and turning.
+
+“Why are you struggling?” it asked.
+
+“I need to reach the door,” Lara said.
+
+“Let me help,” it replied, guiding her safely past the dangers.
+
+At the door, Lara paused.
+
+She remembered everything she had learned.
+
+“Don’t judge things too quickly… and always be kind,” she whispered.
+
+Before she stepped through, the creature called out:
+
+“One last thing—do not use your growing and shrinking powers in your world. They may not work the same way.”
+
+Lara nodded.
+
+Then she opened the door…
+
+…and stepped through.
+
+She found herself back in her room—but something was different.
+
+In her hand, she still held one of the tiny glowing bottles.
+
+Lara smiled.
+
+“It wasn’t a dream,” she said softly.
+
+And deep inside, she knew—
+
+Wonderland was real… and she had truly been there.`
+  }
+];
+
+const shelf = document.getElementById("shelf");
+const masthead = document.getElementById("masthead");
+const reader = document.getElementById("reader");
+const footer = document.getElementById("footer");
+
+stories.forEach((book, index) => {
+  const card = document.createElement("article");
+  card.className = "book";
+
+  const coverButton = document.createElement("button");
+  coverButton.className = "cover-button";
+  coverButton.type = "button";
+  coverButton.setAttribute("aria-label", "Read " + book.title);
+
+  const img = document.createElement("img");
+  img.src = book.cover;
+  img.alt = book.title + " book cover";
+  coverButton.appendChild(img);
+  coverButton.addEventListener("click", () => openStory(index));
+
+  const title = document.createElement("h2");
+  title.textContent = book.title;
+
+  const button = document.createElement("button");
+  button.className = "read-button";
+  button.type = "button";
+  button.textContent = "Read the story";
+  button.addEventListener("click", () => openStory(index));
+
+  card.append(coverButton, title, button);
+  shelf.appendChild(card);
+});
+
+function openStory(index) {
+  const book = stories[index];
+
+  document.getElementById("readerTitle").textContent = book.title;
+
+  const cover = document.getElementById("readerCover");
+  cover.src = book.cover;
+  cover.alt = book.title + " book cover";
+
+  document.getElementById("storyText").textContent = book.text;
+
+  masthead.classList.add("hidden");
+  shelf.classList.add("hidden");
+  footer.classList.add("hidden");
+  reader.style.display = "block";
+
+  history.replaceState(null, "", "#story-" + (index + 1));
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function showShelf() {
+  reader.style.display = "none";
+  masthead.classList.remove("hidden");
+  shelf.classList.remove("hidden");
+  footer.classList.remove("hidden");
+
+  history.replaceState(null, "", location.pathname + location.search);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+document.getElementById("backTop").addEventListener("click", showShelf);
+document.getElementById("backBottom").addEventListener("click", showShelf);
+
+const match = location.hash.match(/^#story-(1|2|3)$/);
+if (match) openStory(Number(match[1]) - 1);
+</script>
+
+</body>
+</html>
